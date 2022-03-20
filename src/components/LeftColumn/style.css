@@ -1,0 +1,26 @@
+#left-column {
+  padding-right: 1em;;
+}
+
+#poke-types_container {
+  /* border: 1px solid green; */
+}
+
+img#poke-sprite {
+  max-width: 360px;
+}
+
+#poke-types_lines {
+  /* border: 1px solid red; */
+  color: blue;
+  padding: 0 1em;
+}
+
+.poke-line {
+  width: 100%;
+  display: flex;
+}
+
+.poke-type {
+  flex-grow: 1;
+}

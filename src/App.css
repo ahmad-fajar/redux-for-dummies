@@ -1,0 +1,33 @@
+#app {
+  text-align: center;
+}
+
+#header-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#app-logo {
+  margin-bottom: 2em;
+  pointer-events: none;
+  width: 320px;
+}
+
+#poke-search-input {
+  border-radius: 4px;
+  border: 1px solid blue;
+  font-size: 1em;
+  padding: 0.5em;
+  text-align: center;
+  width: 320px;
+}
+
+#poke-search-input::placeholder {
+  color: #8484e1;
+}
+
+#poke-search-input:focus {
+  border-color: cyan;
+}

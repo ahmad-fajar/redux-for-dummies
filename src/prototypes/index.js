@@ -1,0 +1,2 @@
+import './properCase';
+import './arrayDivide';
