@@ -12,3 +12,15 @@
 .poke-table_desc-col {
   color: grey;
 }
+
+p.evolution-path:first-child {
+  margin-top: 0;
+}
+
+p.evolution-path span:not(:last-child)::after {
+  content: ' > ';
+}
+
+p.evolution-path > span.link {
+  cursor: pointer;
+}

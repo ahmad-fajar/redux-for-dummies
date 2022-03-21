@@ -2,6 +2,7 @@ export const pokeResponseParser = (pokeResp) => {
   const {
     abilities: abs,
     height,
+    id,
     species: {
       name: species,
     },
@@ -30,10 +31,31 @@ export const pokeResponseParser = (pokeResp) => {
   return {
     abilities,
     height,
+    id,
     species,
     sprite,
     stats,
     types,
     weight,
   };
+};
+
+export const evolvesChainParser = (chain) => {
+  const chainList = [];
+
+  const chainConcat = (cChain, cName) => {
+    if (!cChain.length) {
+      chainList.push(cName);
+      return;
+    }
+
+    cChain.forEach(({ evolves_to: eTo, species: spec }) => {
+      const nextName = `${cName}|${spec.name}`;
+      chainConcat(eTo, nextName);
+    });
+  };
+
+  chainConcat(chain.evolves_to, chain.species.name);
+
+  return chainList;
 };

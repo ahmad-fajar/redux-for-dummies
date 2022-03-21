@@ -7,7 +7,9 @@ import {
   BASE_URL,
   ENDPOINTS,
   POKE_DEFAULT_STATE,
-  POKE_DUMMY_RESP,
+  // POKE_DUMMY_RESP,
+  // POKE_DUMMY_EVOLUTION,
+  // POKE_DUMMY_SPECIES,
   SEARCH_LIMIT,
   SEARCH_PARAMS,
 } from './constants';
@@ -17,9 +19,9 @@ import PokeContainer from './components/PokeContainer';
 import './App.css';
 
 import pokeApi from './assets/pokeapi_256.png';
-import dummy from './dummy.json';
+// import dummy from './dummy.json';
 
-import { pokeResponseParser } from './appHelper';
+import { evolvesChainParser, pokeResponseParser } from './appHelper';
 
 class App extends Component {
   constructor(props) {
@@ -27,35 +29,144 @@ class App extends Component {
     this.state = {
       searchQuery: '',
       pokemon: cloneObject(POKE_DEFAULT_STATE),
-      // pokemon: dummy,
+      loading: {
+        evolutionChain: false,
+        pokemon: false,
+        species: false,
+      },
     };
 
-    this.getPokemonList = debounce(this.getPokemonList.bind(this), 1000);
-    // this.getPokemonList = debounce(this.getPokemonList, 1000).bind(this);
+    this.getPokemon = debounce(this.getPokemon.bind(this), 1000);
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
   }
 
-  inputChangeHandler = (event) => {
-    const pName = event.target.value.trim();
+  inputChangeHandler = (inp) => {
+    // const pName = event.target.value.trim();
+    const pName = inp.trim();
     this.setState({ searchQuery: pName });
     if (pName) {
-      this.getPokemonList(pName);
+      this.getPokemon(pName);
     }
   };
 
-  getPokemonList(pName) {
+  getPokemon(pName) {
     if (!pName) return;
+
+    const { loading } = this.state;
 
     const url = new URL(BASE_URL);
     url.pathname = `${url.pathname}${ENDPOINTS.POKEMON}/${pName}`;
-    url.searchParams.set(SEARCH_PARAMS, SEARCH_LIMIT);
+    url.searchParams.set(SEARCH_PARAMS.LIMIT, SEARCH_LIMIT);
+
+    this.setState({
+      loading: {
+        ...loading,
+        pokemon: true,
+      },
+    });
 
     axios.get(url.href)
     .then(({ data }) => {
-      this.setState({ pokemon: pokeResponseParser(data) });
+      const pokemon = pokeResponseParser(data);
+      this.setState({
+        pokemon,
+        loading: {
+          ...loading,
+          pokemon: false,
+        },
+      });
+      this.getSpecies(data.species.url);
     })
-    .catch(console.error);
+    .catch(e => {
+      console.error(e);
+      this.setState({
+        loading: {
+          ...loading,
+          pokemon: false,
+        },
+      });
+    });
   };
+
+  getSpecies(url) {
+    const { pokemon, loading } = this.state;
+
+    this.setState({
+      loading: {
+        ...loading,
+        species: true,
+      },
+    });
+
+    axios.get(url)
+    .then(({ data }) => {
+      const {
+        evolution_chain,
+        evolves_from_species,
+        is_legendary,
+        is_mythical,
+        name,
+      } = data;
+      this.setState({
+        pokemon: {
+          ...pokemon,
+          evolves_from: evolves_from_species?.name || '-',
+          is_legendary,
+          is_mythical,
+        },
+        loading: {
+          ...loading,
+          species: false,
+        },
+      });
+
+      this.getEvolutionChain(evolution_chain.url, name);
+    })
+    .catch(e => {
+      console.error(e);
+      this.setState({
+        loading: {
+          ...loading,
+          species: false,
+        },
+      });
+    });
+  }
+
+  getEvolutionChain(url) {
+    const { pokemon, loading } = this.state;
+
+    this.setState({
+      loading: {
+        ...loading,
+        evolutionChain: true,
+      },
+    });
+
+    axios.get(url)
+    .then(({ data }) => {
+      const evolution_chain = evolvesChainParser(data.chain);
+      this.setState({
+        pokemon: {
+          ...pokemon,
+          evolution_chain,
+        },
+        loading: {
+          ...loading,
+          evolutionChain: false,
+        },
+      });
+    })
+    .catch(e => {
+      console.error(e);
+      this.setState({
+        loading: {
+          ...loading,
+          evolutionChain: false,
+        },
+      });
+    });
+  }
 
   componentDidCatch(error,errorInfo) {
     console.error({ error, errorInfo });
@@ -63,10 +174,10 @@ class App extends Component {
 
   render() {
     const {
+      loading,
       pokemon,
       searchQuery,
     } = this.state;
-    console.log({ pokemon });
 
     return (
       <div id="app">
@@ -74,14 +185,14 @@ class App extends Component {
           <img id="app-logo" src={pokeApi} alt="poke-api-logo" />
           <input
             id="poke-search-input"
-            onChange={this.inputChangeHandler}
+            onChange={e => this.inputChangeHandler(e.target.value)}
             placeholder="Input Pokemon name or id"
             type="text"
             value={searchQuery}
           />
         </div>
 
-        <PokeContainer pokemon={pokemon} />
+        <PokeContainer loading={loading} pokemon={pokemon} showPokemon={this.inputChangeHandler}/>
       </div>
     );
   }

@@ -1,13 +1,25 @@
+#poke-container * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 #poke-container {
   height: 50vh;
   margin: 2em 0 0;
   padding: 0.5em 0;
 }
 
+#poke-name {
+  position: relative;
+  height: 4em;
+}
+
 #poke-name-big {
   color: #002180;
   font-size: 2em;
   font-weight: 800;
+  margin: 0;
 }
 
 #contents {

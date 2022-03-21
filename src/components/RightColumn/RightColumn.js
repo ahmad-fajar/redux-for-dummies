@@ -7,7 +7,12 @@ import './style.css';
 const RightColumn = props => {
   const {
     abilities,
+    evolution_chain = [],
+    evolves_from,
     height,
+    is_legendary,
+    is_mythical,
+    showPokemon = () => {},
     species,
     stats,
     weight,
@@ -49,20 +54,56 @@ const RightColumn = props => {
     </tr>
   );
 
+  const evolutionList = ((chain) => {
+    if (!chain?.length) {
+      return 'None';
+    }
+
+    const list = chain.map(c => {
+      const steps = c.split('|');
+      const stepElem = steps.map(s => {
+        if (s === species) {
+          return <span key={s}><strong>{s.toProperCase()}</strong></span>;
+        }
+        return (
+          <span key={s} className="link" onClick={() => showPokemon(s)}>
+            {s.toProperCase()}
+          </span>
+        );
+      });
+
+      return (
+        <p key={c} className="evolution-path">
+          {stepElem}
+        </p>
+      );
+    });
+
+    return list;
+  })(evolution_chain);
 
   return (
     <div className="right-column">
       <table id="poke-stat-table">
         <tbody>
+          {rowGenerator('Legendary', is_legendary ? 'Yes' : 'No')}
+
+          {rowGenerator('Mythical', is_mythical ? 'Yes' : 'No')}
+
           {rowGenerator('Abilities', pokeAbilities)}
 
           {rowGenerator('Height', height)}
 
+          {rowGenerator('Weight', weight)}
+
           {rowGenerator('Species', species.toProperCase())}
+
+          {rowGenerator('Evolves from', evolves_from ? evolves_from.toProperCase() : '-')}
+
+          {rowGenerator('Evolution path', evolutionList)}
 
           {rowGenerator('Base Stats', pokeStats)}
 
-          {rowGenerator('Weight', weight)}
         </tbody>
       </table>
     </div>

@@ -3,6 +3,7 @@ interface IPokeResponse {
   // past_types: any[];
   abilities: IPokeAbility[];
   height: number;
+  id: number;
   species: IPokeSpecies;
   sprites: IPokeSprites;
   stats: IPokeStatResp[];
@@ -148,10 +149,91 @@ interface IPokeType {
 
 export const POKE_DEFAULT_STATE = {
   abilities: [],
+  evolution_chain: [],
+  evolves_from: '',
   height: 0,
-  species: 'saika kawakita',
+  id: 0,
+  is_legendary: false,
+  is_mythical: false,
+  species: '',
   sprite: '',
   stats: [],
   types: [],
   weight: 0,
+};
+
+/*
+interface IPokeSpecies {
+  evolution_chain: {
+    url: string;
+  };
+  evolves_from_species: {
+    name: string;
+  };
+  is_legendary: boolean;
+  is_mythical: boolean;
+  varieties: IPokeVariety[];
+}
+
+interface IPokeVariety {
+  pokemon: {
+    name: string;
+  };
+}
+*/
+
+export const POKE_DUMMY_SPECIES = {
+  evolution_chain: {
+    url: 'https://pokeapi.co/api/v2/evolution-chain/2/'
+  },
+  evolves_from_species: {
+    name: 'charmender',
+  },
+  is_legendary: false,
+  is_mythical: false,
+  varieties: [
+    {
+      pokemon: {
+        name: 'charmeleon'
+      },
+    }
+  ],
+};
+
+/*
+interface IPokeEvolutionChain {
+  chain: IPokeEvolveChain;
+  id: number;
+}
+
+interface IPokeEvolveChain {
+  evolves_to: IPokeEvolveChain[];
+  species: {
+    name: string;
+  };
+}
+*/
+
+export const POKE_DUMMY_EVOLUTION = {
+  chain: {
+    evolves_to: [
+      {
+        evolves_to: [
+          {
+            evolves_to: [],
+            species: {
+              name: 'charizard',
+            },
+          },
+        ],
+        species: {
+          name: 'charmeleon'
+        },
+      },
+    ],
+    species: {
+      name: 'charmander',
+    },
+  },
+  id: 2,
 };

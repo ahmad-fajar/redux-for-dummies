@@ -25,11 +25,6 @@ const StatBar = props => {
     borderRadius: '0.5em',
   };
 
-  console.log({
-    percentage,
-    color: getStatColor(percentage),
-  });
-
   return (
     <div className="poke-stat-bar" style={bar}>
       <div style={fill} />
