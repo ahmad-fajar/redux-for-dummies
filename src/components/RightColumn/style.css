@@ -1,0 +1,14 @@
+.poke-table_desc-col,
+.poke-table_name-col {
+  padding: 0.5em;
+  text-align: left;
+  vertical-align: top;
+}
+
+.poke-table_name-col {
+  color: black;
+}
+
+.poke-table_desc-col {
+  color: grey;
+}

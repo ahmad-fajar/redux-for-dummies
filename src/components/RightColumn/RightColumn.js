@@ -1,4 +1,8 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
+
+import StatBar from './StatBar';
+
+import './style.css';
 
 const RightColumn = props => {
   const {
@@ -31,41 +35,34 @@ const RightColumn = props => {
     return (
       <Fragment key={statName}>
         {properify(statName)} &nbsp;
-        {base_stat}
+        <code><strong>{base_stat}</strong></code>
+        <StatBar stat={base_stat} />
         {(idx !== (stats.length - 1)) && <br/>}
       </Fragment>
     );
   });
 
+  const rowGenerator = (name, desc) => (
+    <tr className="poke-table_row">
+      <td className="poke-table_name-col">{name}</td>
+      <td className="poke-table_desc-col">{desc}</td>
+    </tr>
+  );
+
 
   return (
     <div className="right-column">
-      <table>
+      <table id="poke-stat-table">
         <tbody>
-          <tr>
-            <td>Abilities</td>
-            <td>{pokeAbilities}</td>
-          </tr>
+          {rowGenerator('Abilities', pokeAbilities)}
 
-          <tr>
-            <td>Height</td>
-            <td>{height}</td>
-          </tr>
+          {rowGenerator('Height', height)}
 
-          <tr>
-            <td>Species</td>
-            <td>{species.toProperCase()}</td>
-          </tr>
+          {rowGenerator('Species', species.toProperCase())}
 
-          <tr>
-            <td>Stats</td>
-            <td>{pokeStats}</td>
-          </tr>
+          {rowGenerator('Base Stats', pokeStats)}
 
-          <tr>
-            <td>Weight</td>
-            <td>{weight}</td>
-          </tr>
+          {rowGenerator('Weight', weight)}
         </tbody>
       </table>
     </div>
