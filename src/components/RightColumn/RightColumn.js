@@ -14,7 +14,9 @@ const RightColumn = props => {
   const pokeAbilities = abilities.map((a, idx) => {
     return (
       <Fragment key={a}>
-        <span className="table-list">- {properify(a)}</span>
+        <span className="table-list">
+          <code>{properify(a)}</code>
+        </span>
         {(idx !== (abilities.length - 1)) && <br/>}
       </Fragment>
     );

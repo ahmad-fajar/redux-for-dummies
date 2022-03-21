@@ -126,7 +126,6 @@ export const POKE_DUMMY_RESP = {
 /*
 interface IPokeState {
   abilities: string[];
-  name: string;
   height: number;
   species: string;
   sprite: string;
@@ -149,9 +148,8 @@ interface IPokeType {
 
 export const POKE_DEFAULT_STATE = {
   abilities: [],
-  name: 'saika kawakita',
   height: 0,
-  species: '',
+  species: 'saika kawakita',
   sprite: '',
   stats: [],
   types: [],

@@ -7,8 +7,12 @@ import PokeBall from '../../assets/poke-ball.webp';
 const LeftColumn = props => {
   const { sprite, types } = props;
 
-  const typeElem = types.map(({ slot, type }) => {
-    return <p className="poke-type" key={slot}>Slot {slot}: {type.name.toProperCase()}</p>;
+  const typeElem = types.map(({ slot, name }) => {
+    return (
+      <p className="poke-type" key={slot}>
+        Slot {slot}: <code>{name.toProperCase()}</code>
+      </p>
+    );
   });
 
   const typeLines = typeElem.divideBy(3, (line, idx) => <div key={idx} className="poke-line">{line}</div>);

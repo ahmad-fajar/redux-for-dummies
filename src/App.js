@@ -19,6 +19,8 @@ import './App.css';
 import pokeApi from './assets/pokeapi_256.png';
 import dummy from './dummy.json';
 
+import { pokeResponseParser } from './appHelper';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -47,12 +49,10 @@ class App extends Component {
     const url = new URL(BASE_URL);
     url.pathname = `${url.pathname}${ENDPOINTS.POKEMON}/${pName}`;
     url.searchParams.set(SEARCH_PARAMS, SEARCH_LIMIT);
-    console.log(this);
 
     axios.get(url.href)
-    // .then(res => console.log(res))
     .then(({ data }) => {
-      this.setState({ pokemon: data });
+      this.setState({ pokemon: pokeResponseParser(data) });
     })
     .catch(console.error);
   };
@@ -66,6 +66,7 @@ class App extends Component {
       pokemon,
       searchQuery,
     } = this.state;
+    console.log({ pokemon });
 
     return (
       <div id="app">
