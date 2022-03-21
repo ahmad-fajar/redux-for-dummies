@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './style.css';
 
@@ -11,16 +12,10 @@ import { isLoading } from './helper';
 const PokeContainer = props => {
   const {
     loading,
-    pokemon: {
-      species,
-      sprite,
-      types,
-      ...rightColumn
-    },
-    showPokemon,
+    species,
   } = props;
 
-  const pokeName = species ? species.toProperCase() :  'Pokémon';
+  const pokeName = species ? species.toProperCase() : 'Pokémon';
 
   const inProgress = isLoading(loading);
 
@@ -39,14 +34,22 @@ const PokeContainer = props => {
 
       <div id="contents">
         <div className="content">
-          <LeftColumn sprite={sprite} types={types} />
+          <LeftColumn />
         </div>
         <div className="content">
-          <RightColumn {...rightColumn} species={species} showPokemon={showPokemon} />
+          <RightColumn />
         </div>
       </div>
     </div>
   );
 };
 
-export default PokeContainer;
+const mapStateToProps = state => {
+  const { app, pokemon } = state;
+  return {
+    loading: app.loading,
+    species: pokemon.species,
+  };
+};
+
+export default connect(mapStateToProps)(PokeContainer);

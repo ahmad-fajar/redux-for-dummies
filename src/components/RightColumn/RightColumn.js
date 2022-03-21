@@ -1,4 +1,7 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+
+import { getPokemon } from '../../services/apiCalls';
 
 import StatBar from './StatBar';
 
@@ -7,12 +10,13 @@ import './style.css';
 const RightColumn = props => {
   const {
     abilities,
-    evolution_chain = [],
+    evolution_chain,
     evolves_from,
     height,
+    id,
     is_legendary,
     is_mythical,
-    showPokemon = () => {},
+    showPokemon,
     species,
     stats,
     weight,
@@ -86,6 +90,8 @@ const RightColumn = props => {
     <div className="right-column">
       <table id="poke-stat-table">
         <tbody>
+          {rowGenerator('ID', id)}
+
           {rowGenerator('Legendary', is_legendary ? 'Yes' : 'No')}
 
           {rowGenerator('Mythical', is_mythical ? 'Yes' : 'No')}
@@ -110,4 +116,48 @@ const RightColumn = props => {
   );
 };
 
-export default RightColumn;
+const mapStateToProps = state => {
+  const {
+    pokemon: {
+      abilities,
+      evolution_chain,
+      evolves_from,
+      height,
+      id,
+      is_legendary,
+      is_mythical,
+      species,
+      stats,
+      weight,
+    },
+  } = state;
+
+  return {
+    abilities,
+    evolution_chain,
+    evolves_from,
+    height,
+    id,
+    is_legendary,
+    is_mythical,
+    species,
+    stats,
+    weight,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    showPokemon: pokeID => {
+      dispatch(getPokemon(pokeID));
+      dispatch({
+        type: 'SAVE_QUERY',
+        payload: {
+          searchQuery: pokeID,
+        },
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RightColumn);

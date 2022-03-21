@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './style.css';
 
@@ -31,4 +32,12 @@ const LeftColumn = props => {
   );
 };
 
-export default LeftColumn;
+const mapStateToProps = state => {
+  const { pokemon } = state;
+  return {
+    sprite: pokemon.sprite,
+    types: pokemon.types,
+  };
+};
+
+export default connect(mapStateToProps)(LeftColumn);

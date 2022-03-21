@@ -40,6 +40,20 @@ export const pokeResponseParser = (pokeResp) => {
   };
 };
 
+export const pokeSpeciesParser = species => {
+  const {
+    evolves_from_species,
+    is_legendary,
+    is_mythical,
+  } = species;
+
+  return {
+    evolves_from: evolves_from_species?.name || '-',
+    is_legendary,
+    is_mythical,
+  };
+};
+
 export const evolvesChainParser = (chain) => {
   const chainList = [];
 
