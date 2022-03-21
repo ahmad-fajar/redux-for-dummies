@@ -4,20 +4,17 @@ const RightColumn = props => {
   const {
     abilities,
     height,
-    species: {
-      name: speciesName,
-    },
+    species,
     stats,
+    weight,
   } = props;
 
   const properify = s => s.replace('-', ' ').toProperCase();
 
-  const pokeAbilities = abilities.map((ab, idx) => {
-    console.log(ab)
-    const { ability: { name: abilityName } } = ab;
+  const pokeAbilities = abilities.map((a, idx) => {
     return (
-      <Fragment key={abilityName}>
-        <span className="table-list">- {properify(abilityName)}</span>
+      <Fragment key={a}>
+        <span className="table-list">- {properify(a)}</span>
         {(idx !== (abilities.length - 1)) && <br/>}
       </Fragment>
     );
@@ -26,7 +23,7 @@ const RightColumn = props => {
   const pokeStats = stats.map((s, idx) => {
     const {
       base_stat,
-      stat: { name: statName },
+      name: statName,
     } = s;
 
     return (
@@ -55,12 +52,17 @@ const RightColumn = props => {
 
           <tr>
             <td>Species</td>
-            <td>{speciesName.toProperCase()}</td>
+            <td>{species.toProperCase()}</td>
           </tr>
 
           <tr>
             <td>Stats</td>
             <td>{pokeStats}</td>
+          </tr>
+
+          <tr>
+            <td>Weight</td>
+            <td>{weight}</td>
           </tr>
         </tbody>
       </table>

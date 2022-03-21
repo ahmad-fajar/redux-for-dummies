@@ -5,8 +5,7 @@ import './style.css';
 import PokeBall from '../../assets/poke-ball.webp';
 
 const LeftColumn = props => {
-  const { types } = props;
-  const sprite = props?.sprite || PokeBall;
+  const { sprite, types } = props;
 
   const typeElem = types.map(({ slot, type }) => {
     return <p className="poke-type" key={slot}>Slot {slot}: {type.name.toProperCase()}</p>;
@@ -16,7 +15,7 @@ const LeftColumn = props => {
 
   return (
     <div id="left-column">
-      <img id="poke-sprite" src={sprite} alt="poke-sprite"/>
+      <img id="poke-sprite" src={sprite || PokeBall} alt="poke-sprite"/>
 
       <div id="poke-types_container">
         <p>Types</p>

@@ -6,7 +6,8 @@ import { cloneObject, debounce } from './utils';
 import {
   BASE_URL,
   ENDPOINTS,
-  POKE_DEFAULT,
+  POKE_DEFAULT_STATE,
+  POKE_DUMMY_RESP,
   SEARCH_LIMIT,
   SEARCH_PARAMS,
 } from './constants';
@@ -23,7 +24,7 @@ class App extends Component {
     super(props);
     this.state = {
       searchQuery: '',
-      pokemon: cloneObject(POKE_DEFAULT),
+      pokemon: cloneObject(POKE_DEFAULT_STATE),
       // pokemon: dummy,
     };
 

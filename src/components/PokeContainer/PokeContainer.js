@@ -9,18 +9,13 @@ const PokeContainer = props => {
   const {
     pokemon: {
       name: pokeName = 'Pokémon',
-      sprites: {
-        other: {
-          'official-artwork': {
-            front_default: sprite = '',
-          },
-        },
-      },
-      types = [],
+      sprite,
+      types,
       ...rightColumn
     },
   } = props;
 
+  console.log(props.pokemon)
   return (
     <div id="poke-container">
       <p id="poke-name-big">{pokeName.toProperCase()}</p>
