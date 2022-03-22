@@ -8,7 +8,28 @@ const rootReducer = combineReducers({
   pokemon: pokemonReducer,
 });
 
-// redux devtools on chrome and firefox
+/* ----- just store (without middleware) ----- */
+
+// const store = createStore(rootReducer);
+
+/* ----- just store (without middleware) ----- */
+
+// -----
+
+/* ----- store with middleware ----- */
+
+// const middlware = compose(
+//   applyMiddleware(thunk),
+// );
+
+// const store = createStore(rootReducer, middlware);
+
+/* ----- store with middleware ----- */
+
+// -----
+
+/* ----- redux devtools on chrome and firefox  ----- */
+
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const middlware = composeEnhancer(
@@ -16,5 +37,9 @@ const middlware = composeEnhancer(
 );
 
 const store = createStore(rootReducer, middlware);
+
+/* ----- redux devtools on chrome and firefox ----- */
+
+// -----
 
 export default store;
