@@ -50,7 +50,6 @@ const PokeContainer = props => {
     }
     return <p id="poke-name-big">{pokeName}</p>;
   })();
-  console.log('poke container');
 
   return (
     <div id="poke-container">
