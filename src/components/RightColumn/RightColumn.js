@@ -1,5 +1,9 @@
 import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
+import {
+  // connect,
+  useDispatch,
+  useSelector,
+} from 'react-redux';
 
 import { getPokemon } from '../../services/apiCalls';
 
@@ -8,6 +12,24 @@ import StatBar from './StatBar';
 import './style.css';
 
 const RightColumn = props => {
+  /* ----- if use `connect` ----- */
+  // const {
+  //   abilities,
+  //   evolution_chain,
+  //   evolves_from,
+  //   height,
+  //   id,
+  //   is_legendary,
+  //   is_mythical,
+  //   showPokemon,
+  //   species,
+  //   stats,
+  //   weight,
+  // } = props;
+  /* ----- if use `connect` ----- */
+
+  /* ----- if use `useDispatch` and useSelector----- */
+  const dispatch = useDispatch();
   const {
     abilities,
     evolution_chain,
@@ -16,11 +38,54 @@ const RightColumn = props => {
     id,
     is_legendary,
     is_mythical,
-    showPokemon,
     species,
     stats,
     weight,
-  } = props;
+    // searchQuery, // include here, or on different `useSelector` call?
+  } = useSelector(state => {
+    const {
+      pokemon: {
+        abilities,
+        evolution_chain,
+        evolves_from,
+        height,
+        id,
+        is_legendary,
+        is_mythical,
+        species,
+        stats,
+        weight,
+      },
+      // app: { searchQuery }, // include here, or on different `useSelector` call?
+    } = state;
+    return {
+      abilities,
+      evolution_chain,
+      evolves_from,
+      height,
+      id,
+      is_legendary,
+      is_mythical,
+      species,
+      stats,
+      weight,
+      // searchQuery, // include here, or on different `useSelector` call?
+    };
+  });
+
+  /**
+   * benchmark between define `searchQuery` here and above.
+   * see how many render counts between them when `searchQuery` changed.
+   */
+  // const searchQuery = useSelector(
+  //   (state => state.app.searchQuery),
+  //   ((next, previous) => previous === next),
+  //   // ((next, previous) => {
+  //   //   console.log({ next, previous });
+  //   //   return previous === next;
+  //   // }),
+  // );
+  /* ----- if use `useDispatch` and useSelector----- */
 
   const properify = s => s.replace('-', ' ').toProperCase();
 
@@ -63,6 +128,18 @@ const RightColumn = props => {
       return 'None';
     }
 
+    /* comment this function if using `connect` (use mapped `showPokemon` to dispatch) */
+    const showPokemon = pokeID => {
+      console.log('dispatched using `useDispatch` hooks');
+      dispatch(getPokemon(pokeID));
+      // dispatch({
+      //   type: 'SAVE_QUERY',
+      //   payload: {
+      //     searchQuery: pokeID,
+      //   },
+      // });
+    };
+
     const list = chain.map(c => {
       const steps = c.split('|');
       const stepElem = steps.map(s => {
@@ -85,6 +162,9 @@ const RightColumn = props => {
 
     return list;
   })(evolution_chain);
+
+  console.log('{ searchQuery }');
+  // console.log({ searchQuery });
 
   return (
     <div className="right-column">
@@ -116,48 +196,53 @@ const RightColumn = props => {
   );
 };
 
-const mapStateToProps = state => {
-  const {
-    pokemon: {
-      abilities,
-      evolution_chain,
-      evolves_from,
-      height,
-      id,
-      is_legendary,
-      is_mythical,
-      species,
-      stats,
-      weight,
-    },
-  } = state;
+/* commented lines are if use redux with `connect` wrapper */
+// const mapStateToProps = state => {
+//   const {
+//     pokemon: {
+//       abilities,
+//       evolution_chain,
+//       evolves_from,
+//       height,
+//       id,
+//       is_legendary,
+//       is_mythical,
+//       species,
+//       stats,
+//       weight,
+//     },
+//   } = state;
 
-  return {
-    abilities,
-    evolution_chain,
-    evolves_from,
-    height,
-    id,
-    is_legendary,
-    is_mythical,
-    species,
-    stats,
-    weight,
-  };
-};
+//   return {
+//     abilities,
+//     evolution_chain,
+//     evolves_from,
+//     height,
+//     id,
+//     is_legendary,
+//     is_mythical,
+//     species,
+//     stats,
+//     weight,
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    showPokemon: pokeID => {
-      dispatch(getPokemon(pokeID));
-      dispatch({
-        type: 'SAVE_QUERY',
-        payload: {
-          searchQuery: pokeID,
-        },
-      });
-    },
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     showPokemon: pokeID => {
+//     console.log('dispatched using mapped dispatch);
+//       dispatch(getPokemon(pokeID));
+//       dispatch({
+//         type: 'SAVE_QUERY',
+//         payload: {
+//           searchQuery: pokeID,
+//         },
+//       });
+//     },
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RightColumn);
+// export default connect(mapStateToProps, mapDispatchToProps)(RightColumn);
+
+/* since use `useDispatch` and `useSelector`, use this "export default" */
+export default RightColumn;

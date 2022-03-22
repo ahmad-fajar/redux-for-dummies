@@ -25,6 +25,7 @@ const PokeContainer = props => {
     }
     return <p id="poke-name-big">{pokeName}</p>;
   })();
+  console.log('poke container');
 
   return (
     <div id="poke-container">
@@ -52,4 +53,5 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(PokeContainer);
+// export default connect(mapStateToProps)(PokeContainer);
+export default PokeContainer;
