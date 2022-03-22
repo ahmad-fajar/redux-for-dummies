@@ -41,10 +41,23 @@ const RightColumn = props => {
     species,
     stats,
     weight,
-    // searchQuery, // include here, or on different `useSelector` call?
-  } = useSelector(state => {
-    const {
-      pokemon: {
+  } = useSelector(
+    state => {
+      const {
+        pokemon: {
+          abilities,
+          evolution_chain,
+          evolves_from,
+          height,
+          id,
+          is_legendary,
+          is_mythical,
+          species,
+          stats,
+          weight,
+        },
+      } = state;
+      return {
         abilities,
         evolution_chain,
         evolves_from,
@@ -55,36 +68,13 @@ const RightColumn = props => {
         species,
         stats,
         weight,
-      },
-      // app: { searchQuery }, // include here, or on different `useSelector` call?
-    } = state;
-    return {
-      abilities,
-      evolution_chain,
-      evolves_from,
-      height,
-      id,
-      is_legendary,
-      is_mythical,
-      species,
-      stats,
-      weight,
-      // searchQuery, // include here, or on different `useSelector` call?
-    };
-  });
+      };
+    },
 
-  /**
-   * benchmark between define `searchQuery` here and above.
-   * see how many render counts between them when `searchQuery` changed.
-   */
-  // const searchQuery = useSelector(
-  //   (state => state.app.searchQuery),
-  //   ((next, previous) => previous === next),
-  //   // ((next, previous) => {
-  //   //   console.log({ next, previous });
-  //   //   return previous === next;
-  //   // }),
-  // );
+    // will re-render only if `next.id === prev.id`
+    (next, prev) => next.id === prev.id,
+  );
+
   /* ----- if use `useDispatch` and useSelector----- */
 
   const properify = s => s.replace('-', ' ').toProperCase();
@@ -162,9 +152,6 @@ const RightColumn = props => {
 
     return list;
   })(evolution_chain);
-
-  console.log('{ searchQuery }');
-  // console.log({ searchQuery });
 
   return (
     <div className="right-column">
