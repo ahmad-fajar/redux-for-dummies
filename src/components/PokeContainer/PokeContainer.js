@@ -1,5 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {
+  // connect,
+  useSelector,
+} from 'react-redux';
 
 import './style.css';
 
@@ -10,14 +13,36 @@ import PokeLoader from '../PokeLoader';
 // import { isLoading } from './helper';
 
 const PokeContainer = props => {
-  const {
-    loading,
-    species,
-  } = props;
+  /* ----- if use `connect` ----- */
+  // const {
+  //   loading,
+  //   species,
+  // } = props;
+
+  // const inProgress = isLoading(loading);
+  /* ----- if use `connect` ----- */
+
+  /* ----- if use useSelector----- */
+  /**
+   * Compare render counts between these `species` and `loading`
+   * combination.
+   * Don't forget to comment out dispatched `'SAVE_QUERY'` in
+   * `RightColumn` component to prevent re-render because parent (App)
+   * re-render.
+   */
+  // const species = undefined;
+  const species = useSelector(state => state.pokemon.species);
+  // const loading = false;
+  const loading = useSelector(state => state.app.loading);
+
+  // const { loading, species } = useSelector(state => ({
+  //   loading: state.app.loading,
+  //   species: state.pokemon.species,
+  // }));
+  /* ----- if use useSelector----- */
 
   const pokeName = species ? species.toProperCase() : 'Pokémon';
 
-  // const inProgress = isLoading(loading);
 
   const pokeNamePlaceholder = (() => {
     if (loading) {
@@ -45,13 +70,13 @@ const PokeContainer = props => {
   );
 };
 
-const mapStateToProps = state => {
-  const { app, pokemon } = state;
-  return {
-    loading: app.loading,
-    species: pokemon.species,
-  };
-};
+// const mapStateToProps = state => {
+//   const { app, pokemon } = state;
+//   return {
+//     loading: app.loading,
+//     species: pokemon.species,
+//   };
+// };
 
 // export default connect(mapStateToProps)(PokeContainer);
 export default PokeContainer;

@@ -122,12 +122,12 @@ const RightColumn = props => {
     const showPokemon = pokeID => {
       console.log('dispatched using `useDispatch` hooks');
       dispatch(getPokemon(pokeID));
-      // dispatch({
-      //   type: 'SAVE_QUERY',
-      //   payload: {
-      //     searchQuery: pokeID,
-      //   },
-      // });
+      dispatch({
+        type: 'SAVE_QUERY',
+        payload: {
+          searchQuery: pokeID,
+        },
+      });
     };
 
     const list = chain.map(c => {
