@@ -8,7 +8,7 @@ const appReducer = (state = defaultState, actions) => {
 
   switch(type) {
     case 'SAVE_LOADING_STATE': {
-      return { ...state, loading: payload };
+      return { ...state, loading: payload.isLoading };
     }
 
     case 'SAVE_QUERY': {

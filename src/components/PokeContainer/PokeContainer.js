@@ -7,7 +7,7 @@ import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import PokeLoader from '../PokeLoader';
 
-import { isLoading } from './helper';
+// import { isLoading } from './helper';
 
 const PokeContainer = props => {
   const {
@@ -17,10 +17,10 @@ const PokeContainer = props => {
 
   const pokeName = species ? species.toProperCase() : 'Pokémon';
 
-  const inProgress = isLoading(loading);
+  // const inProgress = isLoading(loading);
 
   const pokeNamePlaceholder = (() => {
-    if (inProgress) {
+    if (loading) {
       return <PokeLoader />;
     }
     return <p id="poke-name-big">{pokeName}</p>;
