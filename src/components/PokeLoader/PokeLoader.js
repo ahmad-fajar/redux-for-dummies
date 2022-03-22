@@ -6,8 +6,8 @@ import './style.css';
 
 const PokeLoader = () => {
   return (
-      <div class="wrapper">
-        <div class="pokeball" />
+      <div className="wrapper">
+        <div className="pokeball" />
       </div>
   );
 };

@@ -1,22 +1,27 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 
+import PokeContext from '../PokeContext';
 import StatBar from './StatBar';
 
 import './style.css';
 
-const RightColumn = props => {
+const RightColumn = () => {
+  const context = useContext(PokeContext);
   const {
-    abilities,
-    evolution_chain = [],
-    evolves_from,
-    height,
-    is_legendary,
-    is_mythical,
-    showPokemon = () => {},
-    species,
-    stats,
-    weight,
-  } = props;
+    pokemon: {
+      abilities,
+      evolution_chain,
+      evolves_from,
+      height,
+      id,
+      is_legendary,
+      is_mythical,
+      species,
+      stats,
+      weight,
+    },
+    showPokemon,
+  } = context;
 
   const properify = s => s.replace('-', ' ').toProperCase();
 
@@ -86,6 +91,8 @@ const RightColumn = props => {
     <div className="right-column">
       <table id="poke-stat-table">
         <tbody>
+          {rowGenerator('ID', id)}
+
           {rowGenerator('Legendary', is_legendary ? 'Yes' : 'No')}
 
           {rowGenerator('Mythical', is_mythical ? 'Yes' : 'No')}

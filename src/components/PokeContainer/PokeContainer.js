@@ -1,24 +1,25 @@
-import React from 'react';
+/**
+ * This file provide examples onhow use React Context
+ * for both Class and Functional component.
+ */
+import React, { useContext } from 'react';
 
 import './style.css';
 
 import LeftColumn from '../LeftColumn';
-import RightColumn from '../RightColumn';
+import PokeContext from '../PokeContext';
 import PokeLoader from '../PokeLoader';
+import RightColumn from '../RightColumn';
 
 import { isLoading } from './helper';
 
-const PokeContainer = props => {
+/* ----- use functional component ----- */
+const PokeContainer = () => {
+  const context = useContext(PokeContext);
   const {
     loading,
-    pokemon: {
-      species,
-      sprite,
-      types,
-      ...rightColumn
-    },
-    showPokemon,
-  } = props;
+    pokemon: { species },
+  } = context;
 
   const pokeName = species ? species.toProperCase() :  'Pokémon';
 
@@ -32,21 +33,90 @@ const PokeContainer = props => {
   })();
 
   return (
-    <div id="poke-container">
-      <div id="poke-name">
-        {pokeNamePlaceholder}
-      </div>
+    /** this is an example on how to consume */
+    /** context before `useContext` hook */
+    /** on functional component */
+    <PokeContext.Consumer>
+      {value => {
+        const {
+          pokemon: { sprite, types },
+        } = value;
 
-      <div id="contents">
-        <div className="content">
-          <LeftColumn sprite={sprite} types={types} />
-        </div>
-        <div className="content">
-          <RightColumn {...rightColumn} species={species} showPokemon={showPokemon} />
-        </div>
-      </div>
-    </div>
+        return (
+          <div id="poke-container">
+            <div id="poke-name">
+              {pokeNamePlaceholder}
+            </div>
+
+            <div id="contents">
+              <div className="content">
+                {/* this component receive props */}
+                <LeftColumn sprite={sprite} types={types} />
+              </div>
+              <div className="content">
+                {/* this component will consume context */}
+                <RightColumn />
+              </div>
+            </div>
+          </div>
+        );
+      }}
+    </PokeContext.Consumer>
   );
 };
+/* ----- use functional component ----- */
+
+/* ----- use class component ----- */
+// class PokeContainer extends React.Component {
+//   pokeNamePlaceholder() {
+//     const {
+//       loading,
+//       pokemon: { species },
+//     } = this.props;
+
+//     const pokeName = species ? species.toProperCase() :  'Pokémon';
+
+//     const inProgress = isLoading(loading);
+
+//     if (inProgress) {
+//       return <PokeLoader />;
+//     }
+//     return <p id="poke-name-big">{pokeName}</p>;
+//   }
+
+//   render() {
+//     const {
+//       pokemon: {
+//         species,
+//         sprite,
+//         types,
+//         ...rightColumn
+//       },
+//       showPokemon,
+//       value,
+//     } = this.props;
+//     console.log(this.context);
+
+//     return (
+//       <div id="poke-container">
+//         <div id="poke-name">
+//           {this.pokeNamePlaceholder()}
+//         </div>
+
+//         <div id="contents">
+//           <div className="content">
+//             <LeftColumn sprite={sprite} types={types} />
+//           </div>
+//           <div className="content">
+//             <RightColumn {...rightColumn} species={species} showPokemon={showPokemon} />
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   };
+// }
+
+// PokeContainer.contextType = PokeContext;
+/* ----- use class component ----- */
 
 export default PokeContainer;

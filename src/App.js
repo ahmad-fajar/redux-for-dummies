@@ -7,19 +7,22 @@ import {
   BASE_URL,
   ENDPOINTS,
   POKE_DEFAULT_STATE,
-  // POKE_DUMMY_RESP,
-  // POKE_DUMMY_EVOLUTION,
-  // POKE_DUMMY_SPECIES,
   SEARCH_LIMIT,
   SEARCH_PARAMS,
 } from './constants';
 
 import PokeContainer from './components/PokeContainer';
+import PokeContext from './components/PokeContext';
+/**
+ * alternatively, you can create and export `PokeContext` here.
+ * ```
+ * export const PokeContext = React.createContext();
+ * ```
+ */
 
 import './App.css';
 
 import pokeApi from './assets/pokeapi_256.png';
-// import dummy from './dummy.json';
 
 import { evolvesChainParser, pokeResponseParser } from './appHelper';
 
@@ -173,26 +176,29 @@ class App extends Component {
   }
 
   render() {
-    const {
-      loading,
-      pokemon,
-      searchQuery,
-    } = this.state;
+    const { searchQuery } = this.state;
+
+    const pokeContext = {
+      ...this.state,
+      showPokemon: this.inputChangeHandler,
+    };
 
     return (
       <div id="app">
-        <div id="header-container">
-          <img id="app-logo" src={pokeApi} alt="poke-api-logo" />
-          <input
-            id="poke-search-input"
-            onChange={e => this.inputChangeHandler(e.target.value)}
-            placeholder="Input Pokemon name or id"
-            type="text"
-            value={searchQuery}
-          />
-        </div>
+        <PokeContext.Provider value={pokeContext}>
+          <div id="header-container">
+            <img id="app-logo" src={pokeApi} alt="poke-api-logo" />
+            <input
+              id="poke-search-input"
+              onChange={e => this.inputChangeHandler(e.target.value)}
+              placeholder="Input Pokemon name or id"
+              type="text"
+              value={searchQuery}
+            />
+          </div>
 
-        <PokeContainer loading={loading} pokemon={pokemon} showPokemon={this.inputChangeHandler}/>
+          <PokeContainer />
+        </PokeContext.Provider>
       </div>
     );
   }
