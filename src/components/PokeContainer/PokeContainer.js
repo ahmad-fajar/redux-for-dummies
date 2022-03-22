@@ -21,7 +21,7 @@ const PokeContainer = () => {
     pokemon: { species },
   } = context;
 
-  const pokeName = species ? species.toProperCase() :  'Pokémon';
+  const pokeName = species ? species.toProperCase() : 'Pokémon';
 
   const inProgress = isLoading(loading);
 
@@ -72,9 +72,9 @@ const PokeContainer = () => {
 //     const {
 //       loading,
 //       pokemon: { species },
-//     } = this.props;
+//     } = this.context;
 
-//     const pokeName = species ? species.toProperCase() :  'Pokémon';
+//     const pokeName = species ? species.toProperCase() : 'Pokémon';
 
 //     const inProgress = isLoading(loading);
 
@@ -87,15 +87,10 @@ const PokeContainer = () => {
 //   render() {
 //     const {
 //       pokemon: {
-//         species,
 //         sprite,
 //         types,
-//         ...rightColumn
 //       },
-//       showPokemon,
-//       value,
-//     } = this.props;
-//     console.log(this.context);
+//     } = this.context;
 
 //     return (
 //       <div id="poke-container">
@@ -108,7 +103,7 @@ const PokeContainer = () => {
 //             <LeftColumn sprite={sprite} types={types} />
 //           </div>
 //           <div className="content">
-//             <RightColumn {...rightColumn} species={species} showPokemon={showPokemon} />
+//             <RightColumn />
 //           </div>
 //         </div>
 //       </div>
