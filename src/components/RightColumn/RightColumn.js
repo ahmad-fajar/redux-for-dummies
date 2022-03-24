@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import {
   // connect,
+  shallowEqual,
   useDispatch,
   useSelector,
 } from 'react-redux';
@@ -30,6 +31,7 @@ const RightColumn = props => {
 
   /* ----- if use `useDispatch` and useSelector----- */
   const dispatch = useDispatch();
+
   const {
     abilities,
     evolution_chain,
@@ -71,9 +73,21 @@ const RightColumn = props => {
       };
     },
 
-    // will re-render only if `next.id === prev.id`
-    (next, prev) => next.id === prev.id,
+    /* will re-render only if `next.id === prev.id` */
+    // (next, prev) => next.id === prev.id, // compare specific key(s)
+    shallowEqual, // use react-redux `shallowEqual` for shallow compare
   );
+
+  // const abilities = useSelector(({ pokemon }) => pokemon.abilities);
+  // const evolution_chain = useSelector(({ pokemon }) => pokemon.evolution_chain);
+  // const evolves_from = useSelector(({ pokemon }) => pokemon.evolves_from);
+  // const height = useSelector(({ pokemon }) => pokemon.height);
+  // const id = useSelector(({ pokemon }) => pokemon.id);
+  // const is_legendary = useSelector(({ pokemon }) => pokemon.is_legendary);
+  // const is_mythical = useSelector(({ pokemon }) => pokemon.is_mythical);
+  // const species = useSelector(({ pokemon }) => pokemon.species);
+  // const stats = useSelector(({ pokemon }) => pokemon.stats);
+  // const weight = useSelector(({ pokemon }) => pokemon.weight);
 
   /* ----- if use `useDispatch` and useSelector----- */
 
@@ -152,6 +166,8 @@ const RightColumn = props => {
 
     return list;
   })(evolution_chain);
+
+  console.log('render right column');
 
   return (
     <div className="right-column">
